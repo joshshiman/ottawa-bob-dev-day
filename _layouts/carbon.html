@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} | {{ site.title }}</title>
+  <meta name="description" content="{{ site.description }}">
+  
+  <!-- IBM Carbon Design System Theme -->
+  <link rel="stylesheet" href="{{ '/assets/css/carbon-theme.css' | relative_url }}">
+  
+  <!-- Syntax Highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-light.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+</head>
+<body>
+  <!-- Carbon Header -->
+  <header class="cds-header">
+    <div class="cds-header-container">
+      <a href="{{ '/' | relative_url }}" class="cds-header-name">
+        <span>🏛️</span>
+        <span>{{ site.title }}</span>
+      </a>
+      
+      <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle navigation menu">
+        <span class="hamburger-icon"></span>
+      </button>
+      
+      <div class="cds-header-right">
+        <nav class="cds-header-nav-wrapper" id="main-nav">
+          <ul class="cds-header-nav">
+            <li><a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>Home</a></li>
+            <li><a href="{{ '/labs/lab-1-build/' | relative_url }}" {% if page.url contains 'lab-1-build' %}class="active"{% endif %}>Lab 1: Build</a></li>
+            <li><a href="{{ '/labs/lab-2-budget/' | relative_url }}" {% if page.url contains 'lab-2-budget' %}class="active"{% endif %}>Lab 2: Budget</a></li>
+            <li><a href="{{ '/labs/lab-3-design/' | relative_url }}" {% if page.url contains 'lab-3-design' %}class="active"{% endif %}>Lab 3: Design</a></li>
+            <li><a href="{{ '/labs/cheat-sheet/' | relative_url }}" {% if page.url contains 'cheat-sheet' %}class="active"{% endif %}>Cheat Sheet</a></li>
+          </ul>
+        </nav>
+        
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="theme-toggle-icon">🌙</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="cds-content">
+    <!-- Breadcrumb -->
+    {% if page.url != '/' %}
+    <nav class="cds-breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ '/' | relative_url }}">Home</a>
+      <span class="cds-breadcrumb-separator">/</span>
+      <span>{{ page.title }}</span>
+    </nav>
+    {% endif %}
+    
+    <!-- Page Content -->
+    <div class="cds-grid">
+      <!-- Sidebar Navigation -->
+      <aside class="cds-sidebar">
+        <nav aria-label="Side navigation">
+          <ul class="cds-sidebar-nav">
+            {% if page.url == '/' %}
+            <li><a href="{{ '/' | relative_url }}" class="active">Home</a></li>
+            {% else %}
+            <li><a href="{{ '/' | relative_url }}">Home</a></li>
+            {% endif %}
+            <li><a href="{{ '/labs/lab-1-build/' | relative_url }}" {% if page.url contains 'lab-1-build' %}class="active"{% endif %}>Lab 1: Build the Tracker</a></li>
+            <li><a href="{{ '/labs/lab-2-budget/' | relative_url }}" {% if page.url contains 'lab-2-budget' %}class="active"{% endif %}>Lab 2: Budget Tracker</a></li>
+            <li><a href="{{ '/labs/lab-3-design/' | relative_url }}" {% if page.url contains 'lab-3-design' %}class="active"{% endif %}>Lab 3: Design with Bob</a></li>
+            <li><a href="{{ '/labs/cheat-sheet/' | relative_url }}" {% if page.url contains 'cheat-sheet' %}class="active"{% endif %}>Cheat Sheet</a></li>
+          </ul>
+        </nav>
+        
+        <!-- On This Page Navigation (for lab pages) -->
+        {% if page.url contains '/labs/' %}
+        <div class="cds-sidebar-toc">
+          <h4 class="cds-sidebar-toc-title">On This Page</h4>
+          <nav aria-label="Table of contents">
+            <ul class="cds-sidebar-toc-nav" id="toc-nav">
+              <!-- Will be populated by JavaScript -->
+            </ul>
+          </nav>
+        </div>
+        {% endif %}
+      </aside>
+      
+      <!-- Main Article -->
+      <article style="min-width: 0;">
+        {{ content }}
+      </article>
+    </div>
+  </main>
+
+  <!-- Carbon Footer -->
+  <footer class="cds-footer">
+    <p>
+      {% if site.github.is_project_page %}
+        <a href="{{ site.github.repository_url }}">{{ site.github.repository_name }}</a> is maintained by
+        <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a>
+      {% endif %}
+    </p>
+    <p>Built with IBM Carbon Design System</p>
+  </footer>
+  
+  <script>
+    // Mobile menu toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      var mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+      var headerRight = document.querySelector('.cds-header-right');
+      
+      if (mobileMenuToggle && headerRight) {
+        mobileMenuToggle.addEventListener('click', function(e) {
+          e.stopPropagation();
+          headerRight.classList.toggle('active');
+          mobileMenuToggle.classList.toggle('active');
+          document.body.classList.toggle('menu-open');
+        });
+        
+        // Close menu when clicking a link
+        var navLinks = headerRight.querySelectorAll('.cds-header-nav a');
+        navLinks.forEach(function(link) {
+          link.addEventListener('click', function() {
+            headerRight.classList.remove('active');
+            mobileMenuToggle.classList.remove('active');
+            document.body.classList.remove('menu-open');
+          });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+          if (document.body.classList.contains('menu-open')) {
+            if (!headerRight.contains(e.target) && !mobileMenuToggle.contains(e.target)) {
+              headerRight.classList.remove('active');
+              mobileMenuToggle.classList.remove('active');
+              document.body.classList.remove('menu-open');
+            }
+          }
+        });
+        
+        // Prevent clicks inside menu from closing it
+        headerRight.addEventListener('click', function(e) {
+          e.stopPropagation();
+        });
+      }
+    });
+    
+    // Theme toggle
+    document.addEventListener('DOMContentLoaded', function() {
+      var themeToggle = document.getElementById('theme-toggle');
+      var themeIcon = themeToggle.querySelector('.theme-toggle-icon');
+      var html = document.documentElement;
+      
+      // Check for saved theme preference, default to light
+      var currentTheme = localStorage.getItem('theme') || 'light';
+      html.setAttribute('data-theme', currentTheme);
+      themeIcon.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+      
+      themeToggle.addEventListener('click', function() {
+        var newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+      });
+    });
+    
+    // Sidebar scroll handling - prevent main content scroll when hovering sidebar
+    document.addEventListener('DOMContentLoaded', function() {
+      var sidebar = document.querySelector('.cds-sidebar');
+      if (!sidebar) return;
+      
+      sidebar.addEventListener('wheel', function(e) {
+        var delta = e.deltaY;
+        var atTop = sidebar.scrollTop === 0;
+        var atBottom = sidebar.scrollHeight - sidebar.scrollTop === sidebar.clientHeight;
+        
+        // If scrolling down and not at bottom, or scrolling up and not at top
+        if ((delta > 0 && !atBottom) || (delta < 0 && !atTop)) {
+          e.preventDefault();
+          e.stopPropagation();
+          sidebar.scrollTop += delta;
+        }
+      });
+    });
+  </script>
+  
+  {% if page.url contains '/labs/' %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var article = document.querySelector('article');
+      var tocNav = document.getElementById('toc-nav');
+      
+      if (!article || !tocNav) return;
+      
+      var headings = article.querySelectorAll('h2, h3');
+      if (headings.length === 0) return;
+      
+      headings.forEach(function(heading, index) {
+        if (!heading.id) {
+          var text = heading.textContent.trim();
+          var id = text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/^-+|-+$/g, '');
+          heading.id = id || 'heading-' + index;
+        }
+      });
+      
+      var currentH2Item = null;
+      
+      headings.forEach(function(heading) {
+        var level = heading.tagName.toLowerCase();
+        var text = heading.textContent.trim();
+        var id = heading.id;
+        
+        var li = document.createElement('li');
+        var a = document.createElement('a');
+        a.href = '#' + id;
+        a.textContent = text;
+        
+        if (level === 'h2') {
+          li.className = 'toc-h2';
+          li.appendChild(a);
+          tocNav.appendChild(li);
+          currentH2Item = li;
+        } else if (level === 'h3' && currentH2Item) {
+          li.className = 'toc-h3';
+          li.appendChild(a);
+          
+          var subList = currentH2Item.querySelector('ul');
+          if (!subList) {
+            subList = document.createElement('ul');
+            subList.className = 'toc-sublist';
+            currentH2Item.appendChild(subList);
+          }
+          subList.appendChild(li);
+        }
+      });
+      
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var id = entry.target.id;
+            var activeLink = tocNav.querySelector('a[href="#' + id + '"]');
+            
+            tocNav.querySelectorAll('a').forEach(function(link) {
+              link.classList.remove('active');
+            });
+            
+            if (activeLink) {
+              activeLink.classList.add('active');
+            }
+          }
+        });
+      }, {
+        rootMargin: '-100px 0px -66%',
+        threshold: 0
+      });
+      
+      headings.forEach(function(heading) {
+        observer.observe(heading);
+      });
+      
+      tocNav.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          var targetId = link.getAttribute('href').substring(1);
+          var target = document.getElementById(targetId);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            history.pushState(null, null, '#' + targetId);
+          }
+        });
+      });
+    });
+  </script>
+  {% endif %}
+  
+  <script>
+    // Add copy buttons to all code blocks
+    document.addEventListener('DOMContentLoaded', function() {
+      // Find all pre elements (not nested code elements to avoid duplicates)
+      var preBlocks = document.querySelectorAll('pre');
+      
+      preBlocks.forEach(function(pre) {
+        // Skip if already processed
+        if (pre.parentElement.classList.contains('code-block-wrapper')) {
+          return;
+        }
+        
+        // Skip if already has a copy button
+        if (pre.querySelector('.copy-button') || pre.parentElement.querySelector('.copy-button')) {
+          return;
+        }
+        
+        // Create wrapper
+        var wrapper = document.createElement('div');
+        wrapper.className = 'code-block-wrapper';
+        
+        // Insert wrapper before pre
+        pre.parentNode.insertBefore(wrapper, pre);
+        
+        // Move pre into wrapper
+        wrapper.appendChild(pre);
+        
+        // Create copy button
+        var button = document.createElement('button');
+        button.className = 'copy-button';
+        button.setAttribute('aria-label', 'Copy code to clipboard');
+        
+        // Create button text span (icon is added via CSS ::before)
+        var buttonText = document.createElement('span');
+        buttonText.className = 'copy-button-text';
+        buttonText.textContent = 'Copy';
+        button.appendChild(buttonText);
+        
+        // Add click handler
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Get the code content
+          var code = pre.querySelector('code') || pre;
+          var text = code.textContent || code.innerText;
+          
+          // Copy to clipboard
+          navigator.clipboard.writeText(text).then(function() {
+            // Show success state
+            button.classList.add('copied');
+            // Clear and set new text
+            buttonText.innerHTML = '';
+            buttonText.textContent = 'Copied!';
+            
+            // Reset after 2 seconds
+            setTimeout(function() {
+              button.classList.remove('copied');
+              buttonText.innerHTML = '';
+              buttonText.textContent = 'Copy';
+            }, 2000);
+          }).catch(function(err) {
+            console.error('Failed to copy:', err);
+            buttonText.innerHTML = '';
+            buttonText.textContent = 'Failed';
+            setTimeout(function() {
+              buttonText.innerHTML = '';
+              buttonText.textContent = 'Copy';
+            }, 2000);
+          });
+        });
+        
+        // Add button to wrapper
+        wrapper.appendChild(button);
+      });
+    });
+  </script>
+</body>
+</html>

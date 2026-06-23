@@ -1,0 +1,73 @@
+# Bob Dev Day — Track C Documentation Site
+title: Bob Dev Day — Track C
+description: Build an AI Government Expense Tracker with IBM Bob and watsonx.ai Granite 3
+# theme: jekyll-theme-cayman  # Disabled - using custom Carbon theme
+baseurl: "/ottawa-bob-dev-day"
+url: "https://joshshiman.github.io"
+
+# Navigation
+navigation:
+  - title: Home
+    url: /
+  - title: Lab 1 - Build the Tracker
+    url: /labs/lab-1-build/
+  - title: Lab 2 - Budget Tracker
+    url: /labs/lab-2-budget/
+  - title: Lab 3 - Design with Bob
+    url: /labs/lab-3-design/
+  - title: Cheat Sheet
+    url: /labs/cheat-sheet/
+
+# Build settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Include/Exclude
+include:
+  - labs
+exclude:
+  - resources
+  - venv
+  - vendor
+  - Gemfile
+  - Gemfile.lock
+  - "*.py"
+  - "*.pyc"
+  - requirements.txt
+  - .env
+  - .env.example
+  - .gitignore
+
+# Plugins
+plugins:
+  - jekyll-relative-links
+  - jekyll-optional-front-matter
+  - jekyll-readme-index
+  - jekyll-titles-from-headings
+
+# Plugin settings
+relative_links:
+  enabled: true
+  collections: false
+
+optional_front_matter:
+  remove_originals: false
+
+titles_from_headings:
+  enabled: true
+  strip_title: false
+  collections: false
+
+# Default layout for all pages
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: carbon
+
+# GitHub metadata
+repository: joshshiman/ottawa-bob-dev-day
+
+# Made with Bob
