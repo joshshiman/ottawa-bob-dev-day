@@ -83,8 +83,8 @@ You're managing government department expenses with a pile of receipts in differ
   <a href="labs/lab-3-design/" class="lab-card">
     <div class="lab-number">03</div>
     <div class="lab-content">
-      <h3>Design with Bob</h3>
-      <p>Open-ended — have a conversation with Bob to customize the look and feel of your app</p>
+      <h3>Advanced Customization</h3>
+      <p>Switch AI models, add Canadian government compliance checking, and customize the UI with Bob</p>
       <span class="lab-duration">⏱️ Open-ended</span>
     </div>
   </a>
@@ -94,15 +94,18 @@ You're managing government department expenses with a pile of receipts in differ
 
 <div class="cta-section">
   <p>Ready to build your AI expense tracker?</p>
-  <a href="labs/lab-1-build/" class="cds-btn cds-btn-primary">Start Lab 1: Build the Tracker →</a>
+  <a href="labs/prerequisite/" class="cds-btn cds-btn-primary">Start with the Prerequisites →</a>
 </div>
 
 ## 📋 Prerequisites
 
+Before Lab 1, complete the <a href="labs/prerequisite/">Prerequisites</a> guide. You'll need:
+
 - A laptop with internet connection (first run downloads ~2GB of ML models)
 - Python 3.10–3.13 installed
 - IBM Bob installed
-- watsonx.ai credentials (API key, project ID, region URL) — provided by your facilitator
+- An IBMid and IBM Cloud account
+- watsonx.ai credentials — your API key, project ID, and region URL
 
 ---
 

@@ -9,6 +9,8 @@ url: "https://joshshiman.github.io"
 navigation:
   - title: Home
     url: /
+  - title: Prerequisites
+    url: /labs/prerequisite/
   - title: Lab 1 - Build the Tracker
     url: /labs/lab-1-build/
   - title: Lab 2 - Budget Tracker

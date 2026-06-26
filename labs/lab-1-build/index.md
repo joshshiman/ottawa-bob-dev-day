@@ -13,115 +13,32 @@ This guide assumes no prior context. Follow every step to build a working applic
 
 ## What This Application Does
 
-✅ Upload up to 10 PDF receipts (office supplies, equipment, services, utilities).    
-✅ Auto-detect document type from filename.    
-✅ Extract structured expense data using IBM watsonx.ai Granite 3 LLM.    
-✅ Display results in a table with 8 columns.    
-✅ Show 4 metric cards (Files Processed, Line Items, Total Amount, Avg Confidence).    
-✅ Generate 4 interactive Plotly charts (by vendor, by category, by document type).    
-✅ Export data to CSV.    
-✅ Generate an AI-written plain-English summary of your government expenses.    
+✅ Upload up to 10 PDF receipts (office supplies, equipment, services, utilities).
+✅ Auto-detect document type from filename.
+✅ Extract structured expense data using IBM watsonx.ai Granite 3 LLM.
+✅ Display results in a table with 8 columns.
+✅ Show 4 metric cards (Files Processed, Line Items, Total Amount, Avg Confidence).
+✅ Generate 4 interactive Plotly charts (by vendor, by category, by document type).
+✅ Export data to CSV.
+✅ Generate an AI-written plain-English summary of your government expenses.
 
 
 ---
+
 
 ## Prerequisites
 
-### System Requirements
+Before starting this lab, make sure you have completed all the prerequisites:
 
-- **Operating System**: macOS, Linux, or Windows
-- **Python Version**: 3.10, 3.11, 3.12, or 3.13 (recommended)
-  - Python 3.14 requires special setup (see below)
-- **Internet Connection**: Required for first run (downloads ~2GB of ML models)
-- **Disk Space**: At least 5GB free
+👉 **[Complete Prerequisites →](/ottawa-bob-dev-day/labs/prerequisite/)**
 
-### Installing Python
+This includes:
+- Installing Python 3.10-3.13
+- Installing IBM Bob
+- Creating IBM Cloud account and IBMid
+- Getting your watsonx.ai credentials (API Key, Project ID, Cloud URL)
 
-If you don't have Python installed, follow these steps:
-
-**Mac:**
-1. Go to [python.org/downloads](https://python.org/downloads).
-2. Click **Download Python 3.13.x** (the big yellow button).
-3. Open the downloaded `.pkg` file and follow the installer.
-4. When done, open Terminal and run `python3 --version` to confirm.
-
-**Windows**:
-1. Go to [python.org/downloads](https://python.org/downloads, Download and install Python Install Manager.
-2. Open Python Install Manager when installation is complete.
-3. In the Python Install Manager window, run:
-
-   ```bash
-   py install 3.13
-   ```
-
-4. Wait for Python 3.13 to finish installing.
-5. Open Command Prompt and run:
-
-   ```bash
-   py -3.13 --version
-   ```
-
-6. If the command is not recognized, add Python to your PATH:
-   - Open **Edit the system environment variables**.
-   - Click **Environment Variables**.
-   - Edit the **Path** variable.
-   - Add the Python installation directory and Scripts directory.
-   - restart your device.
-7. Open a new Command Prompt and run:
-
-   ```bash
-   py -3.13 --version
-   ```
-
-   to confirm the installation
-
-> **Note for Python 3.14 users:** If you already have Python 3.14 installed, you must still install Python 3.13 using the steps above. When running scripts, always use:
-
-```bash
-py -3.13 YOURFILE.py
-```
-
-instead of:
-
-```bash
-python YOURFILE.py
-```
-
-or:
-
-```bash
-py YOURFILE.py
-```
-
-to ensure Python 3.13 is used.
-
-
-
-
-
-> 💡 pip comes bundled with Python 3.13. If `pip3 --version` gives an error,
-> run `python3 -m ensurepip` to install it.
----
-
-### Installing IBM Bob
-
-1. Search for IBM Bob online.
-2. Download the IBM Bob installer for your operating system.
-3. Open the installer and follow the prompts.
-4. Launch Bob — you should see the Bob IDE with the chat panel on the right.
-
-
-### IBM watsonx.ai Credentials
-
-For this lab, you will be provided with IBM watsonx.ai credentials. Your facilitator will give you:
-- **API_KEY** - Your IBM Cloud API key
-- **PROJECT_ID** - Your watsonx.ai project ID  
-- **CLOUD_URL** - The region URL (e.g., `https://us-south.ml.cloud.ibm.com`)
-
-Write these down or keep them in a safe place - you'll need them in the next step.
-
----
-
+Once you have your credentials ready, continue below to start building!
 
 ---
 
@@ -157,6 +74,9 @@ requests
 
 Return confirmation when done.
 ```
+<img width="1066" height="770" alt="Screenshot 2026-06-23 at 2 30 18 PM" src="https://github.com/user-attachments/assets/c85c8ce9-c113-4711-b820-6c37d728e473" />
+
+
 
 Bob will create the folder and the requirements.txt file for you.
 
@@ -177,30 +97,34 @@ pip3 install -r requirements.txt
 ```
 ---
 
-## Step 3: Create `.env` File with Bob
+## Step 3: Create `.env` File
 
-Now that you have your credentials, ask Bob to create the `.env` file for you.
+First, make sure you are in your project folder, then create the '.env' (note the dot at the beginning) file, paste these contents: 
+```bash
 
-Open Bob and paste this prompt (replace the placeholder values with your actual credentials):
+API_KEY=paste_your_api_key_here
+PROJECT_ID=paste_your_project_id_here
+CLOUD_URL= paste_your_URL_here For example: https://us-south.ml.cloud.ibm.com
+LLM_NAME=ibm/granite-3-8b-instruct
 
 ```
-Create a .env file in my project folder with these credentials:
-
-API_KEY=your_actual_api_key_here
-PROJECT_ID=your_actual_project_id_here
-CLOUD_URL=your_actual_cloud_url_here
-LLM_NAME=meta-llama/llama-3-3-70b-instruct
-
-Make sure the file is named exactly ".env" (with the dot at the beginning).
+No output means it worked. Verify the file was created:
+```bash
+cat .env
 ```
+You should see the four lines above.
 
-Bob will create the `.env` file with your credentials.
+3d. Fill In Your Real Credentials
 
-> 🔒 **Security Note**: Never commit `.env` to version control. The `.gitignore` file should already exclude it.
+
+> 🔒 **Security Note**: Never commit `.env` to version control. Add it to `.gitignore`.
 
 ---
 
 ## Step 4: Generate `model_gateway.py` with Bob (Bob Advanced Model is Recommended)
+
+<img width="1067" height="768" alt="Screenshot 2026-06-23 at 2 18 25 PM" src="https://github.com/user-attachments/assets/49a04130-006a-4633-82e2-141589a54cf2" />
+
 
 This file handles the connection to watsonx.ai using the REST API.
 
@@ -255,11 +179,15 @@ print(invoke_llm('Say hello in one sentence.'))
 "
 ```
  
-**Expected:** Granite 3 replies with a sentence ✅
+**Expected:** LLM replies with a sentence ✅
  
 ---
 
 ## Step 5: Generate `doc_processing.py` with Bob
+
+
+<img width="1087" height="798" alt="Screenshot 2026-06-23 at 2 20 16 PM" src="https://github.com/user-attachments/assets/d918ef25-7896-479c-ae2d-098d3c0f13ec" />
+
 
 This file handles PDF parsing and AI-powered data extraction.
 
@@ -481,6 +409,10 @@ Return only the complete Python file with no explanations.
 ----
 
 ## Step 6 — Generate `app.py` with Bob
+
+
+<img width="1087" height="798" alt="Screenshot 2026-06-23 at 2 21 28 PM" src="https://github.com/user-attachments/assets/e5385aad-fa06-4c2d-a9b5-6cca4936d5c2" />
+
 
 Open Bob and paste this prompt:
 ```
@@ -710,6 +642,9 @@ cd /Users/austinzhang/Desktop/Test\ Bob && streamlit run app.py
 ```
 
 The app opens automatically at **http://localhost:8501**.
+
+<img width="1227" height="712" alt="Screenshot 2026-06-23 at 2 24 01 PM" src="https://github.com/user-attachments/assets/0660675d-e7b7-4d28-a910-d8c859c5aeb2" />
+
 
 
 ## Usage
